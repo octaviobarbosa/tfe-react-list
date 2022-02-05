@@ -1,23 +1,47 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import NovaTarefa from './components/NovaTarefa';
+import Item from './components/Item'
 
-function App() {
+const App = () => {
+  const [listaTarefas, setListaTarefas] = useState([])
+
+  const addTarefa = (item) => {
+    setListaTarefas([
+      ...listaTarefas,
+      item
+    ])
+  }
+
+  const removeTarefa = (item) => {
+    const newList = listaTarefas.filter(tarefa => tarefa !== item)
+
+    setListaTarefas(newList)
+  }
+
+  const updateTarefa = (item, value) => {
+    const index = listaTarefas.findIndex(findItem => findItem === item)
+
+    listaTarefas[index].name = value
+
+    setListaTarefas(listaTarefas)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='taskBox'>
+      <h1>Tarefa 4</h1>
+
+      <br />
+
+      <NovaTarefa addTarefa={addTarefa}/>
+
+      <ul style={{listStyleType: 'none'}}>
+        {listaTarefas.map((item, index) => {
+          return (
+            <Item key={index} item={item} removeItem={removeTarefa} updateItem={updateTarefa} />
+          )
+        })}
+      </ul>
     </div>
   );
 }
